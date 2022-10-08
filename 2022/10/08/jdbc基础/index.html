@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"rayhcl.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JDBC常用类和接口JDBC在jdk中被定义，由一组用Java语言编写的类和接口组成，大致分为两种：针对java程序员的JDBC API和针对数据库开发商底层的JDBC Driver API,可以为多种关系型数据库提供统一的访问方法。 Connection接口​       Connection接口在java.sql包中，是与数据库连接的对象，只有获得特定的数据库连接对象，才能访问数据库进行数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jdbc基础">
+<meta property="og:url" content="https://rayhcl.github.io/2022/10/08/jdbc%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="RayBlog">
+<meta property="og:description" content="JDBC常用类和接口JDBC在jdk中被定义，由一组用Java语言编写的类和接口组成，大致分为两种：针对java程序员的JDBC API和针对数据库开发商底层的JDBC Driver API,可以为多种关系型数据库提供统一的访问方法。 Connection接口​       Connection接口在java.sql包中，是与数据库连接的对象，只有获得特定的数据库连接对象，才能访问数据库进行数据库">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-08T08:38:42.530Z">
+<meta property="article:author" content="Ray">
+<meta property="article:tag" content="jdbc">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://rayhcl.github.io/2022/10/08/jdbc%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://rayhcl.github.io/2022/10/08/jdbc%E5%9F%BA%E7%A1%80/","path":"2022/10/08/jdbc基础/","title":"jdbc基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>jdbc基础 | RayBlog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">RayBlog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JDBC%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">JDBC常用类和接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Connection%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.1.</span> <span class="nav-text">Connection接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DriverManager%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">DriverManager类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Statement%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.3.</span> <span class="nav-text">Statement接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PreparedStatement%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.4.</span> <span class="nav-text">PreparedStatement接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResultSet%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.5.</span> <span class="nav-text">ResultSet接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JDBC%E7%BC%96%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">JDBC编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E5%BA%93%E9%A9%B1%E5%8A%A8"><span class="nav-number">2.1.</span> <span class="nav-text">加载数据库驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.2.</span> <span class="nav-text">建立与数据库的连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8F%91%E9%80%81SQL%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">向数据库发送SQL命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C%E9%9B%86"><span class="nav-number">2.4.</span> <span class="nav-text">处理数据库的返回结果集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%AD%E5%BC%80%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.5.</span> <span class="nav-text">断开与数据库的连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDBC%E4%BB%A3%E7%A0%81"><span class="nav-number">2.6.</span> <span class="nav-text">JDBC代码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Ray"
+      src="/uploads/avatar20220925.jpg">
+  <p class="site-author-name" itemprop="name">Ray</p>
+  <div class="site-description" itemprop="description">热爱生活，热爱学习</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/RayHCL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;RayHCL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://rayhcl.github.io/2022/10/08/jdbc%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar20220925.jpg">
+      <meta itemprop="name" content="Ray">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RayBlog">
+      <meta itemprop="description" content="热爱生活，热爱学习">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="jdbc基础 | RayBlog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          jdbc基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-08 00:00:00 / 修改时间：16:38:42" itemprop="dateCreated datePublished" datetime="2022-10-08T00:00:00+08:00">2022-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/jdbc/" itemprop="url" rel="index"><span itemprop="name">jdbc</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="JDBC常用类和接口"><a href="#JDBC常用类和接口" class="headerlink" title="JDBC常用类和接口"></a>JDBC常用类和接口</h1><p>JDBC在jdk中被定义，由一组用Java语言编写的类和接口组成，大致分为两种：针对java程序员的JDBC API和针对数据库开发商底层的JDBC Driver API,可以为多种关系型数据库提供统一的访问方法。</p>
+<h2 id="Connection接口"><a href="#Connection接口" class="headerlink" title="Connection接口"></a>Connection接口</h2><p>​       Connection接口在java.sql包中，是与数据库连接的对象，只有获得特定的数据库连接对象，才能访问数据库进行数据库操作。</p>
+<p>​       Connection接口要求所有实现此接口的容器,必须提供至少两种构造方法：无参构造方法，参数为Connection类的构造方法。后者需要创建一个具有和参数包含元素相同的新集合，以此来进行集合的复制。Java中所有的API均遵守此规则。</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法签名</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">createStatement()</td>
+<td>创建一个Statement对象</td>
+</tr>
+<tr>
+<td align="left">createStatement(int resultSetType, int resultSetConcurrency)</td>
+<td>创建一个Statement对象，同时生成具有给指定类型、并发性和可保存性的resultSet对象。</td>
+</tr>
+<tr>
+<td align="left">prepareStatement(String sql)</td>
+<td>创建预处理对象PreparedStatement对象</td>
+</tr>
+<tr>
+<td align="left">isReadOnly()</td>
+<td>查看当前Connection对象的读取模式是否为只读模式</td>
+</tr>
+<tr>
+<td align="left">setReadOnly(boolean readOnly)</td>
+<td>设置当前Connection对象的读取模式，默认是非只读模式</td>
+</tr>
+<tr>
+<td align="left">commit()</td>
+<td>使所有上一次提交、回滚后进行的更改成为持久更改，并释放Connection对象当前持有的所有数据库锁</td>
+</tr>
+<tr>
+<td align="left">rollback()</td>
+<td>取消在当前事务进行的所有更改，并释放次Connection对象当前持有的所有数据库锁</td>
+</tr>
+<tr>
+<td align="left">close()</td>
+<td>立即释放次Connection对象的数据库和JDBC资源，而不是等待它们被自动释放。</td>
+</tr>
+</tbody></table>
+<h2 id="DriverManager类"><a href="#DriverManager类" class="headerlink" title="DriverManager类"></a>DriverManager类</h2><p>DriverManager类中包含与数据库交互操作的方法，该类中的方法全部有数据库厂商提供。它的方法签名及其功能描述：</p>
+<table>
+<thead>
+<tr>
+<th>方法签名</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getConnection(String url,     String user, String password)</td>
+<td>指定三个入口参数（连接数据库url,用户名,密码）来获取与数据库的连接。</td>
+</tr>
+<tr>
+<td>setLoginTimeout(int seconds)</td>
+<td>获取驱动程序试图登录到某一数据库时可以等待的最长时间，以s为单位</td>
+</tr>
+<tr>
+<td>println(String message)</td>
+<td>将一条消息输出到当前JDBC日志流中</td>
+</tr>
+</tbody></table>
+<h2 id="Statement接口"><a href="#Statement接口" class="headerlink" title="Statement接口"></a>Statement接口</h2><p>Statement接口是Java程序执行数据库操作的重要接口，用于已经建立数据库连接的基础之上，向数据库发送要执行的SQL语句，主要用于执行不带参数的简单SQL语句。它的方法签名及其功能描述：</p>
+<table>
+<thead>
+<tr>
+<th>方法签名</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>execute(String sql)</td>
+<td>执行静态的select语句，该语句可能返回多个结果集。</td>
+</tr>
+<tr>
+<td>executeQuery(String sql)</td>
+<td>执行给定的sql语句，该语句返回单个ResultSet对象。</td>
+</tr>
+<tr>
+<td>clearBatch()</td>
+<td>清空此statement对象的当前SQL命令列表。</td>
+</tr>
+<tr>
+<td>executeBatch()</td>
+<td>将一批命令提交给数据库来执行，如果全部命令执行成功，则返回更新计数组成的数组，数组元素的排序与sql语句的添加顺序对应。</td>
+</tr>
+<tr>
+<td>addBatch( String sql )</td>
+<td>将给定的SQL命令添加到此statement对象的当前命令列表中，如果驱动程序不支持批量处理，将抛出异常。</td>
+</tr>
+<tr>
+<td>close()</td>
+<td>释放statement实例占用的数据库和JDBC资源</td>
+</tr>
+</tbody></table>
+<h2 id="PreparedStatement接口"><a href="#PreparedStatement接口" class="headerlink" title="PreparedStatement接口"></a>PreparedStatement接口</h2><p>PreparedStatement接口位于java.sql包中，它继承了Statement，但是preparedStatement相比有很大不同。</p>
+<ul>
+<li>preparedStatement对象是经过预编译的，所以其执行速度比statement对象速度快</li>
+<li>Preparedstatement继承了statement功能之外，添加了一整套方法，用于设置发送给数据库以取代参数占用符的值，可以有效避免SQL注入或攻击。</li>
+</ul>
+<p>它的方法签名及其功能描述：</p>
+<table>
+<thead>
+<tr>
+<th>方法签名</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setInt(int parameterIndex, int x)</td>
+<td>将指定位置的参数设置为int值</td>
+</tr>
+<tr>
+<td>setLong(int parameterIndex, long x)</td>
+<td>将指定位置的参数设置为long值</td>
+</tr>
+<tr>
+<td>setFloat(int parameterIndex, float x)</td>
+<td>将指定位置的参数设置为float值</td>
+</tr>
+<tr>
+<td>setDouble(int parameterIndex, double x)</td>
+<td>将指定位置的参数设置为double值</td>
+</tr>
+<tr>
+<td>setDate(int parameterIndex, java.sql.Date x)</td>
+<td>将指定位置的参数设置为date值</td>
+</tr>
+<tr>
+<td>setString(int parameterIndex, String x)</td>
+<td>将指定位置的参数设置为String值</td>
+</tr>
+<tr>
+<td>executeUpdate()</td>
+<td>执行前面包含的参数的动态Insert、update或delete语句</td>
+</tr>
+<tr>
+<td>setNull (int parameterIndex, int sqlType, String typeName)</td>
+<td>将指定位置的参数设置为SQL NULL</td>
+</tr>
+<tr>
+<td>executeQuery()</td>
+<td>在此PreparedSatement对象执行SQL查询，并返回该查询生成的ResultSet对象</td>
+</tr>
+<tr>
+<td>clearParameters()</td>
+<td>清除当前所有参数值</td>
+</tr>
+</tbody></table>
+<h2 id="ResultSet接口"><a href="#ResultSet接口" class="headerlink" title="ResultSet接口"></a>ResultSet接口</h2><p>result接口是数据库结果集的结果表，通常是通过查询数据库的语句生成的，它主要提供了常用的从当前行检索列值得获取方法（getBoolean、getLong等），它的方法签名及其功能描述：</p>
+<table>
+<thead>
+<tr>
+<th>方法签名</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getInt()</td>
+<td>以int形式获取此ResultSet对象的当前行的指定列值。如果列值是null，则返回值是0</td>
+</tr>
+<tr>
+<td>getFloat()</td>
+<td>以float形式获取此ResultSet对象的当前行的指定列值。如果列值是null，则返回值是0</td>
+</tr>
+<tr>
+<td>getDate()</td>
+<td>以date形式获取此ResultSet对象的当前行的指定列值。如果列值是null，则返回值是null</td>
+</tr>
+<tr>
+<td>getBoolean()</td>
+<td>以boolean形式获取此ResultSet对象的当前行的指定列值。如果列值是null，则返回值是null</td>
+</tr>
+<tr>
+<td>getString()</td>
+<td>以String形式获取此ResultSet对象的当前行的指定列值。如果列值是null，则返回值是null</td>
+</tr>
+<tr>
+<td>getObject()</td>
+<td>以Object形式获取此ResultSet对象的当前行的指定列值。如果列值是null，则返回值是null</td>
+</tr>
+<tr>
+<td>first()</td>
+<td>将指针移到当前记录的第一行</td>
+</tr>
+<tr>
+<td>last()</td>
+<td>将当前指针移到当前记录的最后一行</td>
+</tr>
+<tr>
+<td>next()</td>
+<td>将指针向下移一行</td>
+</tr>
+<tr>
+<td>beforeFirst()</td>
+<td>将指针移到集合的开头（第一行位置）</td>
+</tr>
+<tr>
+<td>afterLast()</td>
+<td>将指针移到集合的尾部（最后一行位置）</td>
+</tr>
+<tr>
+<td>absolute(int index)</td>
+<td>将指针移到ResultSet给定编号行</td>
+</tr>
+<tr>
+<td>isFirst()</td>
+<td>判断指针是否位于当前ResultSet集合的第一行，如果是，返回true，否则返回false</td>
+</tr>
+<tr>
+<td>isLast()</td>
+<td>判断指针是否位于当前ResultSet集合的最后一行，如果是，返回true，否则返回false</td>
+</tr>
+<tr>
+<td>updateInt()</td>
+<td>用int值更新指定列</td>
+</tr>
+<tr>
+<td>updateFloat()</td>
+<td>用float值更新指定列</td>
+</tr>
+<tr>
+<td>updateLong()</td>
+<td>用long值更新指定列</td>
+</tr>
+<tr>
+<td>updateString()</td>
+<td>用String值更新指定列</td>
+</tr>
+<tr>
+<td>updateObject()</td>
+<td>用Object值更新指定列</td>
+</tr>
+<tr>
+<td>upDateNull()</td>
+<td>将指定列值修改为null</td>
+</tr>
+<tr>
+<td>updateDate()</td>
+<td>用Date值更新指定列</td>
+</tr>
+<tr>
+<td>updateDouble()</td>
+<td>用double值更新指定列</td>
+</tr>
+<tr>
+<td>getRow()</td>
+<td>查看当前行的索引号</td>
+</tr>
+<tr>
+<td>insertRow()</td>
+<td>将插入行的内容插入数据库</td>
+</tr>
+<tr>
+<td>updateRow()</td>
+<td>将当前行的内容同步到数据表</td>
+</tr>
+<tr>
+<td>deleteRow()</td>
+<td>删除当前行，但并不同步到数据库中，而是在执行close()方法后同步到数据库</td>
+</tr>
+</tbody></table>
+<h1 id="JDBC编程"><a href="#JDBC编程" class="headerlink" title="JDBC编程"></a>JDBC编程</h1><p>使用JDBC连接访问数据库需要经过以下几个步骤。</p>
+<ol>
+<li>加载数据库驱动</li>
+<li>建立数据库的连接</li>
+<li>向数据库发送SQL命令</li>
+<li>处理数据库的返回结果集</li>
+<li>断开与数据库连接</li>
+</ol>
+<h2 id="加载数据库驱动"><a href="#加载数据库驱动" class="headerlink" title="加载数据库驱动"></a>加载数据库驱动</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class.forName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>​      不同的数据库其数据库驱动类是不同的，例如，MySQL数据库的驱动类是com.mysql.cj.jdbc.Driver(老版驱动类com.mysql.jdbc.Driver),而Oracle数据库的驱动类是Oracle.jdbc.driver.OracleDriver。未避免加载失败导致意外错误，一般用==try-catch语句包围来捕获异常==。</p>
+<h2 id="建立与数据库的连接"><a href="#建立与数据库的连接" class="headerlink" title="建立与数据库的连接"></a>建立与数据库的连接</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DriverManager.getConnection(String URL,String USER,String PASSWORD);</span><br></pre></td></tr></table></figure>
+
+<p>==需要try-catch捕获异常==。</p>
+<h2 id="向数据库发送SQL命令"><a href="#向数据库发送SQL命令" class="headerlink" title="向数据库发送SQL命令"></a>向数据库发送SQL命令</h2><p>使用SQL语句对数据库进行操作访问，是通过对Statement对象进行封装后，发送给数据库的，Statement对象不是由Statement类创建的，而是通过Connection对象提供的方法来创建各种Statement对象。</p>
+<ol>
+<li>CreateStatement()方法：用于创建一个基本的Statemen对象，主要用于执行静态SQL语句。</li>
+<li>PreparedSatement(String sql)方法：根据参数化的SQL语句创建一个经过预编译的PreparedStatement独享，主要用于执行动态SQL。</li>
+<li>preparedCall(String sql)方法：创建一个CallableSatement对象，主要用于执行存储过程。</li>
+</ol>
+<p>获取到不同的Statement对象后，调用该对象的不同方法来执行不同的SQL语句，多有的Statement对象都有以下3种方法：</p>
+<ul>
+<li>ResultSet executeQuery(String sql) :专用于查询</li>
+<li>int executeUpdate(String sql)：执行DDL、DML语句，前者返回0，后者返回受影响的行数。</li>
+<li>Boolean execute(String sql)：可以执行任何SQL语句。如果执行了查询语句，则返回true,如果执行了DDL、DML语句，则返回false。 如果true,可以通过该Statement对象的getResultSet()方法获取结果对象；如果false，可以通过该Statement对象的getUpdateCount()方法获得受影响的行数。</li>
+</ul>
+<p>==需要try-catch捕获异常==</p>
+<h2 id="处理数据库的返回结果集"><a href="#处理数据库的返回结果集" class="headerlink" title="处理数据库的返回结果集"></a>处理数据库的返回结果集</h2><p>两种情况：<br>1、执行更新返回的是本次操作影响到的记录数。<br>2、执行查询返回的结果是一个ResultSet对象。</p>
+<p>SQL查询结果都是经过ResultSet封装过的，读取ResultSet结果集数据方法主要是getXXX()。</p>
+<h2 id="断开与数据库的连接"><a href="#断开与数据库的连接" class="headerlink" title="断开与数据库的连接"></a>断开与数据库的连接</h2><p>所有操作都是进行完后要关闭JDBC资源，以防止系统资源的浪费，但是关闭的顺序和刚开定义对象时后相反。</p>
+<ol>
+<li>关闭结果集，rs.close()。</li>
+<li>关闭Statement对象，stmt.close()。</li>
+<li>关闭连接，con.close()。</li>
+</ol>
+<h2 id="JDBC代码"><a href="#JDBC代码" class="headerlink" title="JDBC代码"></a>JDBC代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        String url=<span class="string">&quot;&quot;</span>;</span><br><span class="line">        String user=<span class="string">&quot;&quot;</span>;</span><br><span class="line">        String password=<span class="string">&quot;&quot;</span>;</span><br><span class="line">        String sql=<span class="string">&quot;select * from customer&quot;</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//1、加载驱动</span></span><br><span class="line">            Class.forName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);</span><br><span class="line">            <span class="comment">//2、建立连接</span></span><br><span class="line">            <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(url, user, password);</span><br><span class="line">            <span class="comment">//3、创建statement</span></span><br><span class="line">            <span class="type">Statement</span> <span class="variable">st</span> <span class="operator">=</span> conn.createStatement();</span><br><span class="line">            <span class="comment">//4、执行sql，并返回结果集</span></span><br><span class="line">            <span class="type">ResultSet</span> <span class="variable">rs</span> <span class="operator">=</span> st.executeQuery(sql);</span><br><span class="line">            <span class="comment">//5、输出结果</span></span><br><span class="line">            <span class="keyword">while</span> (rs.next())&#123;</span><br><span class="line">                Long id=rs.getLong(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">                String name=rs.getString(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">                String job=rs.getString(<span class="string">&quot;job&quot;</span>);</span><br><span class="line">                String phone=rs.getString(<span class="string">&quot;phone&quot;</span>);</span><br><span class="line">                System.out.println(<span class="string">&quot;id = &quot;</span>+id+<span class="string">&quot; name = &quot;</span>+name+<span class="string">&quot; job = &quot;</span>+job+<span class="string">&quot; phone = &quot;</span>+phone);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//关闭rs</span></span><br><span class="line">            rs.close();</span><br><span class="line">            <span class="comment">//关闭statement</span></span><br><span class="line">            st.close();</span><br><span class="line">            <span class="comment">//关闭数据库连接</span></span><br><span class="line">            conn.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/jdbc/" rel="tag"># jdbc</a>
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/08/Servlet%E5%9F%BA%E7%A1%80/" rel="prev" title="Servlet基础">
+                  <i class="fa fa-chevron-left"></i> Servlet基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ray</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
