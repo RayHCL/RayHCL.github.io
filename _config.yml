@@ -39,7 +39,7 @@ external_link:
   exclude: []
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 syntax_highlighter: highlight.js
@@ -49,6 +49,12 @@ highlight:
   tab_replace: ''
   wrap: true
   hljs: false
+  exclude_languages:
+    - mermaid
+
+marked:
+  prependRoot: true
+  postAsset: true
 
 # Home page
 index_generator:
@@ -73,6 +79,33 @@ pagination_dir: page
 
 # Extensions
 theme: next
+
+# Post word count and estimated reading time
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+  exclude_codeblock: true
+  wpm: 275
+  suffix: "分钟"
+
+# Atom feed
+feed:
+  enable: true
+  type: atom
+  path: atom.xml
+  limit: 20
+  content: false
+  content_limit: 300
+  autodiscovery: true
+
+# Search-engine sitemap
+sitemap:
+  path: sitemap.xml
+  rel: true
+  tags: true
+  categories: true
 
 # Deployment: source branch -> generated main branch
 deploy:

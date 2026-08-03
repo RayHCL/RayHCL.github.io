@@ -2,6 +2,8 @@
 
 这个分支保存博客的 Hexo 原始工程；`main` 分支保存 `hexo deploy` 生成的静态页面，并由 GitHub Pages 发布。
 
+当前已启用自动深色模式、阅读进度与书签、图片放大与懒加载、文章字数与阅读时间、Mermaid、Atom RSS、Sitemap、本地搜索和访问统计。
+
 ## 环境
 
 - Node.js 20.19.0 或更高版本
@@ -31,6 +33,14 @@ tags:
   - LangChain
   - Agent
 ```
+
+每篇新文章还会生成一个同名资源目录。把图片放进该目录后，可以直接使用 Markdown 相对路径：
+
+```markdown
+![图片说明](image.png)
+```
+
+Mermaid 图表可以直接写在 `mermaid` 代码块中。
 
 ## 本地预览
 
