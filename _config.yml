@@ -1,0 +1,82 @@
+# Site
+title: RayBlog
+subtitle: ''
+description: 热爱生活，热爱学习
+keywords:
+  - AI
+  - LangChain
+  - 编程
+author: Ray
+language: zh-CN
+timezone: Asia/Shanghai
+
+# URL
+url: https://rayhcl.github.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults: {}
+pretty_urls:
+  trailing_index: false
+  trailing_html: false
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render: []
+
+# Writing
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude: []
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+syntax_highlighter: highlight.js
+highlight:
+  auto_detect: false
+  line_number: true
+  tab_replace: ''
+  wrap: true
+  hljs: false
+
+# Home page
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+
+# Category & Tag
+default_category: uncategorized
+category_map: {}
+tag_map: {}
+
+# Metadata
+meta_generator: true
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+updated_option: mtime
+
+# Pagination
+per_page: 10
+pagination_dir: page
+
+# Extensions
+theme: next
+
+# Deployment: source branch -> generated main branch
+deploy:
+  type: git
+  repo: git@github.com:RayHCL/RayHCL.github.io.git
+  branch: main
+  message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
