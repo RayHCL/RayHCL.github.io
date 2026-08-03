@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <author>
+    <name>Ray</name>
+  </author>
+  <generator uri="https://hexo.io/">Hexo</generator>
+  <id>https://rayhcl.github.io/</id>
+  <link href="https://rayhcl.github.io/" rel="alternate"/>
+  <link href="https://rayhcl.github.io/atom.xml" rel="self"/>
+  <rights>All rights reserved 2026, Ray</rights>
+  <subtitle>热爱生活，热爱学习</subtitle>
+  <title>RayBlog</title>
+  <updated>2026-08-02T16:00:00.000Z</updated>
+  <entry>
+    <author>
+      <name>Ray</name>
+    </author>
+    <category term="AI" scheme="https://rayhcl.github.io/categories/AI/"/>
+    <category term="LangChain" scheme="https://rayhcl.github.io/tags/LangChain/"/>
+    <category term="AI" scheme="https://rayhcl.github.io/tags/AI/"/>
+    <category term="Agent" scheme="https://rayhcl.github.io/tags/Agent/"/>
+    <id>https://rayhcl.github.io/2026/08/03/LangChain1-0/</id>
+    <link href="https://rayhcl.github.io/2026/08/03/LangChain1-0/"/>
+    <published>2026-08-02T16:00:00.000Z</published>
+    <summary>记录 LangChain 1.x 的核心 API 与概念，涵盖 Agents、Models、Tools、Memory、Middleware、Guardrails、Runtime 与 MCP。</summary>
+    <title>LangChain 1.0 学习笔记</title>
+    <updated>2026-08-02T16:00:00.000Z</updated>
+  </entry>
+</feed>
