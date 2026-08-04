@@ -1,7 +1,7 @@
 ---
 title: LangChain 1.0 学习笔记
 date: 2026-08-03 00:00:00
-updated: 2026-08-03 00:00:00
+updated: 2026-08-04 00:00:00
 categories:
   - AI
 tags:
@@ -39,7 +39,7 @@ description: 记录 LangChain 1.x 的核心 API 与概念，涵盖 Agents、Mode
 
 1. 安装langchain
 
-   ```shell
+   ```bash
    uv add langchain
    ```
 
@@ -47,13 +47,13 @@ description: 记录 LangChain 1.x 的核心 API 与概念，涵盖 Agents、Mode
 
    下面的示例，我改成`DeepSeek-V3.2`，为此，需要额外安装两个依赖：
 
-   ```
+   ```bash
    uv add dotenv langchain-openai
    ```
 
    dotenv 用来[动态加载](https://so.csdn.net/so/search?q=动态加载&spm=1001.2101.3001.7020)环境变量，首先需要创建一个`.env`文件，然后将硅基流动平台[2]的 API-KEY 填进去：
 
-   ```env
+   ```ini
    SILICONFLOW_API_KEY=
    ```
 
@@ -121,7 +121,7 @@ model：模型是智能体的推理引擎。它可以通过多种方式进行指
 
 - 静态模型在创建代理时配置一次，并在整个执行过程中保持不变。这是最常见、最直接的方法。
 
-  ```py
+  ```python
   #静态模型在创建代理时配置一次，并在整个执行过程中保持不变。这是最常见、最直接的方法。
   from langchain.agents import create_agent
 
@@ -135,7 +135,7 @@ model：模型是智能体的推理引擎。它可以通过多种方式进行指
 
   为了更好地控制模型配置，可以直接使用提供程序包初始化模型实例。在本例中，我们使用 `<path>` [`ChatOpenAI`](https://reference.langchain.com/python/integrations/langchain_openai/ChatOpenAI)。有关其他可用的聊天[模型类，请参阅“聊天模型”部分。](https://docs.langchain.com/oss/python/integrations/chat)
 
-  ```py
+  ```python
   from langchain.agents import create_agent
   from langchain_openai import ChatOpenAI
 
@@ -155,7 +155,7 @@ model：模型是智能体的推理引擎。它可以通过多种方式进行指
 
   要使用动态模型，请使用[`@wrap_model_call`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.wrap_model_call)装饰器创建中间件，该装饰器会在请求中修改模型：
 
-  ```py
+  ```python
   from langchain_openai import ChatOpenAI
   from langchain.agents import create_agent
   from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
@@ -221,7 +221,7 @@ model：模型是智能体的推理引擎。它可以通过多种方式进行指
 
 #### 定义工具
 
-```py
+```python
 from langchain.tools import tool
 from langchain.agents import create_agent
 
@@ -243,7 +243,7 @@ agent = create_agent(model, tools=[search, get_weather])
 
 要自定义工具错误的处理方式，请使用[`@wrap_tool_call`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.wrap_tool_call)装饰器创建中间件
 
-```py
+```python
 from langchain.agents.middleware import wrap_tool_call
 from langchain.messages import ToolMessage
 from langchain.tools import tool
@@ -298,7 +298,7 @@ agent = create_agent(
 
 可以通过提供提示来控制代理处理任务的方式。该[`system_prompt`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent(system_prompt))参数可以以字符串形式提供：
 
-```py
+```python
 agent = create_agent(
     model,
     tools,
@@ -308,7 +308,7 @@ agent = create_agent(
 
 如果没有[`system_prompt`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent(system_prompt))提供任务，代理将直接从消息中推断其任务。该[`system_prompt`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent(system_prompt))参数接受 a`str`或 a [`SystemMessage`](https://reference.langchain.com/python/langchain/messages/#langchain.messages.SystemMessage)。使用 a`SystemMessage`可以让你更好地控制提示结构
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.messages import SystemMessage, HumanMessage
 
@@ -340,7 +340,7 @@ result = literary_agent.invoke(
 
 对于需要根据运行时上下文或代理状态修改系统提示的更高级用例，可以使用[中间件](https://docs.langchain.com/oss/python/langchain/middleware)。装饰[`@dynamic_prompt`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.dynamic_prompt)器会创建中间件，该中间件会根据模型请求生成系统提示
 
-```py
+```python
 from typing import TypedDict
 
 from langchain.agents import create_agent
@@ -411,7 +411,7 @@ print(result)
 
 `ToolStrategy`使用人工工具调用来生成结构化输出。这适用于任何支持工具调用的模型：
 
-```py
+```python
 from pydantic import BaseModel
 from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
@@ -439,7 +439,7 @@ result["structured_response"]
 
 `ProviderStrategy` uses the model provider’s native structured output generation. This is more reliable but only works with providers that support native structured output (e.g., OpenAI):
 
-```
+```python
 from langchain.agents.structured_output import ProviderStrategy
 
 agent = create_agent(
@@ -485,11 +485,11 @@ LLM是功能强大的AI工具，能够像人类一样理解和生成文本。它
 
 **openai**
 
-```
+```bash
 pip install -U "langchain[openai]"
 ```
 
-```py
+```python
 import os
 from langchain.chat_models import init_chat_model
 
@@ -548,7 +548,7 @@ number
 
 必须调用聊天模型才能生成输出。有三种主要的调用方法，每种方法都适用于不同的使用场景。
 
-```py
+```python
 response = model.invoke("Why do parrots have colorful feathers?")
 print(response)
 ```
@@ -557,7 +557,7 @@ print(response)
 
 大多数模型都能在生成输出内容的同时进行流式传输。通过逐步显示输出，流式传输显著提升了用户体验，尤其是在处理较长的响应时。调用[`stream()`](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.chat_models.BaseChatModel.stream)返回一个迭代器它会在生成过程中实时输出数据块。您可以使用循环来实时处理每个数据块：
 
-```py
+```python
 for chunk in model.stream("Why do parrots have colorful feathers?"):
     print(chunk.text, end="|", flush=True)
 ```
@@ -566,7 +566,7 @@ for chunk in model.stream("Why do parrots have colorful feathers?"):
 
 将一系列独立的模型请求批量处理，可以显著提高性能并降低成本，因为可以并行处理这些请求：
 
-```py
+```python
 responses = model.batch([
     "Why do parrots have colorful feathers?",
     "How do airplanes fly?",
@@ -587,7 +587,7 @@ for response in responses:
 
 工具需要被模型使用需要通过使用`bind_tools`，后续模型会自动选择合适的工具。
 
-```py
+```python
 from langchain.tools import tool
 
 @tool
@@ -629,7 +629,7 @@ for tool_call in response.tool_calls:
 
 [Pydantic](https://docs.pydantic.dev/latest/concepts/models/#basic-model-usage)  提供最丰富的功能集，包括字段验证、描述和嵌套结构。
 
-```py
+```python
 from pydantic import BaseModel, Field
 
 class Movie(BaseModel):
@@ -646,7 +646,7 @@ print(response)  # Movie(title="Inception", year=2010, director="Christopher Nol
 
 TypedDict 用 Python 的内置类型系统提供了一种更简单的替代方案，非常适合不需要运行时验证的情况。
 
-```py
+```python
 from typing_extensions import TypedDict, Annotated
 
 class MovieDict(TypedDict):
@@ -663,7 +663,7 @@ print(response)  # {'title': 'Inception', 'year': 2010, 'director': 'Christopher
 
 JSON模式 为了获得最大的控制权或互操作性，您可以提供原始的 JSON Schema。
 
-```py
+```python
 import json
 
 json_schema = {
@@ -713,13 +713,13 @@ LangChain 提供了一种适用于所有模型提供程序的标准消息类型�
 
 #### Text prompts
 
-```py
+```python
 response = model.invoke("Write a haiku about spring")
 ```
 
 #### Message prompts
 
-```py
+```python
 from langchain.messages import SystemMessage, HumanMessage, AIMessage
 
 messages = [
@@ -732,7 +732,7 @@ response = model.invoke(messages)
 
 #### Dictionary format
 
-```py
+```python
 messages = [
     {"role": "system", "content": "You are a poetry expert"},
     {"role": "user", "content": "Write a haiku about spring"},
@@ -762,7 +762,7 @@ response = model.invoke(messages)
 
 默认情况下，工具名称来源于函数名称。如果需要更具描述性的名称，请对其进行覆盖：
 
-```
+```python
 @tool("web_search")  # Custom name
 def search(query: str) -> str:
     """Search the web for information."""
@@ -775,7 +775,7 @@ print(search.name)  # web_search
 
 覆盖自动生成的工具描述，以便获得更清晰的模型指导：
 
-```
+```python
 @tool("calculator", description="Performs arithmetic calculations. Use this for any math problems.")
 def calc(expression: str) -> str:
     """Evaluate mathematical expressions."""
@@ -801,7 +801,7 @@ def calc(expression: str) -> str:
 
 工具可以通过以下方式访问当前图状态`ToolRuntime`：
 
-```py
+```python
 from langchain.tools import tool, ToolRuntime
 
 # Access the current conversation state
@@ -837,7 +837,7 @@ def get_user_preference(
 
 要向agent添加短期记忆（线程级持久性），您需要`checkpointer`在创建agent时指定一个。
 
-```py
+```python
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -858,11 +858,11 @@ agent.invoke(
 
 在生产环境中，使用由数据库支持的检查点：
 
-```shell
+```bash
 pip install langgraph-checkpoint-postgres
 ```
 
-```py
+```python
 from langchain.agents import create_agent
 
 from langgraph.checkpoint.postgres import PostgresSaver
@@ -891,7 +891,7 @@ with PostgresSaver.from_conn_string(DB_URI) as checkpointer:
 
 大多数 LLM 都有最大支持的上下文窗口（以标记为单位）。一种决定何时截断消息的方法是统计消息历史记录中的标记数量，并在接近该限制时进行截断。如果您使用的是 LangChain，则可以使用 trim messages 工具，并指定要从列表中保留的标记数量，以及用于处理边界的条件`strategy`（例如，保留最后一个标记）。`max_tokens`要在代理中清理消息历史记录，请使用[`@before_model`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.before_model)中间件装饰器：
 
-```py
+```python
 from langchain.messages import RemoveMessage
 from langgraph.graph.message import REMOVE_ALL_MESSAGES
 from langgraph.checkpoint.memory import InMemorySaver
@@ -950,7 +950,7 @@ If you'd like me to call you a nickname or use a different name, just say the wo
 
 删除特定的消息：
 
-```py
+```python
 from langchain.messages import RemoveMessage
 
 def delete_messages(state):
@@ -962,7 +962,7 @@ def delete_messages(state):
 
 删除全部的消息：
 
-```py
+```python
 from langgraph.graph.message import REMOVE_ALL_MESSAGES
 
 def delete_messages(state):
@@ -977,7 +977,7 @@ def delete_messages(state):
 
 使用内置函数[`SummarizationMiddleware`](https://docs.langchain.com/oss/python/langchain/middleware#summarization)：
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
@@ -1032,7 +1032,7 @@ LangChain 的流式系统允许您将Agent运行的实时反馈呈现给您的�
 
 LangChain[`create_agent`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent)能够自动处理结构化输出。用户设置所需的结构化输出模式，当模型生成结构化数据时，这些数据会被捕获、验证，并以`'structured_response'`代理状态键的形式返回。
 
-```py
+```python
 def create_agent(
     ...
     response_format: Union[
@@ -1053,7 +1053,7 @@ def create_agent(
 
 通过向以下参数传递中间件来添加它们[`create_agent`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent)：
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware, HumanInTheLoopMiddleware
 
@@ -1106,7 +1106,7 @@ LangChain 为常见用例提供预构建的中间件。每个中间件都已准�
 - 多轮对话，历史悠久。
 - 需要保留完整对话上下文的应用场景。
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware
 
@@ -1131,7 +1131,7 @@ agent = create_agent(
 - 需要人工监督的合规工作流程。
 - 长时间的对话，其中人类的反馈会指导智能体。
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
@@ -1170,7 +1170,7 @@ agent = create_agent(
 - 对生产部署实施成本控制。
 - 在特定通话预算范围内测试客服人员的行为。
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import ModelCallLimitMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
@@ -1198,7 +1198,7 @@ agent = create_agent(
 - 对特定工具的使用频率实施限制。
 - 防止代理程序陷入失控循环。
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import ToolCallLimitMiddleware
 
@@ -1226,7 +1226,7 @@ agent = create_agent(
 - 通过采用更便宜的型号来优化成本。
 - OpenAI、Anthropic 等供应商之间的冗余。
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import ModelFallbackMiddleware
 
@@ -1250,7 +1250,7 @@ agent = create_agent(
 - 需要清理日志的客服人员。
 - 任何处理敏感用户数据的应用程序。
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import PIIMiddleware
 
@@ -1301,7 +1301,7 @@ agent = create_agent(
 1. **正则表达式模式字符串**- 简单模式匹配
 2. **自定义功能**- 带有验证功能的复杂检测逻辑
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import PIIMiddleware
 import re
@@ -1449,7 +1449,7 @@ PII检测
 
 使用“before agent”钩子在每次调用开始时验证请求一次。这对于会话级检查（例如身份验证、速率限制或在任何处理开始之前阻止不当请求）非常有用。
 
-```py
+```python
 from typing import Any
 
 from langchain.agents.middleware import AgentMiddleware, AgentState, hook_config
@@ -1511,7 +1511,7 @@ Agent护栏之后
 
 使用“agent后”钩子在返回给用户之前对最终输出进行一次验证。这对于基于模型的安全检查、质量验证或对完整代理响应进行最终合规性扫描非常有用。
 
-```py
+```python
 from langchain.agents.middleware import AgentMiddleware, AgentState, hook_config
 from langgraph.runtime import Runtime
 from langchain.messages import AIMessage
@@ -1566,7 +1566,7 @@ result = agent.invoke({
 
 您可以通过将多个防护措施添加到中间件数组中来堆叠它们。它们按顺序执行，从而允许您构建分层保护：
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import PIIMiddleware, HumanInTheLoopMiddleware
 
@@ -1604,7 +1604,7 @@ LangChain[`create_agent`](https://reference.langchain.com/python/langchain/agent
 
 使用 创建一个代理时[`create_agent`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent)，您可以指定来定义存储在代理中`context_schema`的 的结构。`context`[`Runtime`](https://reference.langchain.com/python/langgraph/runtime/#langgraph.runtime.Runtime)调用代理时，请传递`context`包含运行相关配置的参数：
 
-```py
+```python
 from dataclasses import dataclass
 
 from langchain.agents import create_agent
@@ -1636,7 +1636,7 @@ agent.invoke(
 
 使用该`ToolRuntime`参数可以访问[`Runtime`](https://reference.langchain.com/python/langgraph/runtime/#langgraph.runtime.Runtime)工具内部的对象。
 
-```py
+```python
 from dataclasses import dataclass
 from langchain.tools import tool, ToolRuntime
 
@@ -1661,7 +1661,7 @@ def fetch_user_email_preferences(runtime: ToolRuntime[Context]) -> str:
 
 您可以访问中间件中的运行时信息，以根据用户上下文创建动态提示、修改消息或控制代理行为。用于在中间件装饰器中`request.runtime`访问[`Runtime`](https://reference.langchain.com/python/langgraph/runtime/#langgraph.runtime.Runtime)对象。运行时对象可通过[`ModelRequest`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.ModelRequest)传递给中间件函数的参数访问。
 
-```py
+```python
 from dataclasses import dataclass
 
 from langchain.messages import AnyMessage
@@ -1747,7 +1747,7 @@ LangChain[中间件](https://docs.langchain.com/oss/python/langchain/middleware)
 
 ##### 状态（短期记忆）
 
-```py
+```python
 from langchain.agents import create_agent
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
 
@@ -1772,7 +1772,7 @@ agent = create_agent(
 
 ##### 存储（长期记忆）
 
-```py
+```python
 from dataclasses import dataclass
 from langchain.agents import create_agent
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
@@ -1809,7 +1809,7 @@ agent = create_agent(
 
 ##### 运行时上下文（静态配置）
 
-```py
+```python
 from dataclasses import dataclass
 from langchain.agents import create_agent
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
@@ -1867,7 +1867,7 @@ agent = create_agent(
 
 安装`langchain-mcp-adapters`库：
 
-```shell
+```bash
 pip install langchain-mcp-adapters
 
 uv add langchain-mcp-adapters
@@ -1877,7 +1877,7 @@ uv add langchain-mcp-adapters
 
 访问多个 MCP 服务器
 
-```py
+```python
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain.agents import create_agent
 
@@ -1915,14 +1915,14 @@ weather_response = await agent.ainvoke(
 
 要创建自定义 MCP 服务器，请使用[FastMCP](https://gofastmcp.com/getting-started/welcome)库：
 
-```shell
+```bash
 pip install fastmcp
 uv add fastmcp
 ```
 
 标准输入输出
 
-```shell
+```python
 from fastmcp import FastMCP
 
 mcp = FastMCP("Math")
@@ -1943,7 +1943,7 @@ if __name__ == "__main__":
 
 可流式HTTP传输
 
-```py
+```python
 from fastmcp import FastMCP
 
 mcp = FastMCP("Weather")
@@ -1989,7 +1989,7 @@ MCP 支持不同的客户端-服务器通信传输机制。
 
 用于`client.get_tools()`从 MCP 服务器检索工具并将其传递给您的Agent：
 
-```py
+```python
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain.agents import create_agent
 
@@ -2014,7 +2014,7 @@ MCP 工具可以在响应中返回[多模态内容（图像、文本等）。当
 
 用于`client.get_resources()`从 MCP 服务器加载资源：
 
-```py
+```python
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 client = MultiServerMCPClient({...})
@@ -2038,7 +2038,7 @@ for blob in blobs:
 
 用于`client.get_prompt()`从 MCP 服务器加载提示符：
 
-```py
+```python
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
 client = MultiServerMCPClient({...})
