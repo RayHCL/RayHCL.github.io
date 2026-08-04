@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, Ray</rights>
   <subtitle>热爱生活，热爱学习</subtitle>
   <title>RayBlog</title>
-  <updated>2026-08-02T16:00:00.000Z</updated>
+  <updated>2026-08-03T16:00:00.000Z</updated>
   <entry>
     <author>
       <name>Ray</name>
@@ -24,6 +24,6 @@
     <published>2026-08-02T16:00:00.000Z</published>
     <summary>记录 LangChain 1.x 的核心 API 与概念，涵盖 Agents、Models、Tools、Memory、Middleware、Guardrails、Runtime 与 MCP。</summary>
     <title>LangChain 1.0 学习笔记</title>
-    <updated>2026-08-02T16:00:00.000Z</updated>
+    <updated>2026-08-03T16:00:00.000Z</updated>
   </entry>
 </feed>
